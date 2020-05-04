@@ -7,37 +7,28 @@ import java.io.ByteArrayOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import java.io.OutputStream;
 
 public class Filetoformat 
 {
     public static byte[] filetranslate(String sfilename) throws IOException
     {
-        File filed = new File(sfilename);
+        File filed = new File(sfilename); //Reads file to bytes array 
         byte[] data = Files.readAllBytes(filed.toPath());
         int icounter = data.length;
         System.out.println(" " + icounter);
         return data;
     }
-
-    public static void bytetranslate(byte[] enfile, String filepath, String filetype) throws IOException
+    public static boolean Deletefile(String sfilepath) //Deletes encrypted or original file
     {
-        if (filetype == "image")
-        {
-            File nimage = new File(filepath);
-            ByteArrayInputStream binput = new ByteArrayInputStream(enfile);
-            BufferedImage eimage = ImageIO.read(binput);
-            ImageIO.write(eimage, "jpg", nimage);
-            System.out.println("Image created ");
-        }
-        else if (filetype == "txt")
-        {
-            File nencryptedfile = new File(filepath);
-            FileOutputStream fos = null;
-            fos = new FileOutputStream(nencryptedfile);
-            fos.write(enfile);
-            fos.close();
-            System.out.println("File encrypted successfully");
-        }
-
+        File fdelete = new File(sfilepath); //Code by C Mac Mahon
+        return fdelete.delete();
+    }
+    public static void bytetranslate(byte[] enfile, String sfilepath) throws IOException 
+    {
+        OutputStream out = new FileOutputStream(sfilepath); //Writes new encrypted or decrypted file 
+        out.write(enfile);
+        out.close();
+        System.out.println("File saved successfully");
     }
 }
