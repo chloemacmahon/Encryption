@@ -35,7 +35,7 @@ public class Cryptography
             System.out.println(sPassword);
             if (result == JFileChooser.APPROVE_OPTION)
             {
-                sfilepath = opendialog.getName(opendialog.getSelectedFile()); //Receives filename
+                sfilepath = opendialog.getSelectedFile().getAbsolutePath(); //Receives filename
 
                 String sfiletype = Fileformat(sfilepath); //Tests filepath
                 //Start of user coding 
@@ -48,7 +48,7 @@ public class Cryptography
                 if (ichoice == 0)
                 {
                     Encryptprocess(sPassword, sfilepath, sfiletype);
-                    JOptionPane.showMessageDialog(frame, "File encoded successfully original file deleted", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "File encoded successfully original file deleted " ,"Information", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else if (ichoice == 1)
                 {
@@ -112,12 +112,13 @@ public class Cryptography
         {
             byte arrdecrypted[] = Filetoformat.filetranslate(sfilepath); //Receives decrypted array
             byte arrencrypted[] = Encrypt.Encode(arrdecrypted, sPassword); //Creates encrypted array
-            Filetoformat.bytetranslate(arrencrypted, "e" + sfilepath); //Problem maybe
-            System.out.println("File encrypted successfully");
             if (Filetoformat.Deletefile(sfilepath)) //Deletes unencrypted file 
             {
                 System.out.println("Original file deleted successfully");
             }
+            Filetoformat.bytetranslate(arrencrypted, sfilepath); //Problem maybe
+            System.out.println("File encrypted successfully");
+            
             
         }
         catch (IOException ex) 
@@ -133,16 +134,17 @@ public class Cryptography
             byte arrencrypted[] = Filetoformat.filetranslate(sfilepath); //Receives encrypted array
             byte arrdecrypted[] = Decrypt.Decode(arrencrypted, sPassword); //Creates decrypted array
             String snew = new String();
-            for (int icounter = 1; icounter < sfilepath.length() ; icounter++)
+            for (int icounter = 0; icounter < sfilepath.length() ; icounter++)
             {
                 snew = snew + sfilepath.charAt(icounter);
             } //Removes the e from filename 
-            Filetoformat.bytetranslate(arrdecrypted, snew); //Problem maybe
-            System.out.println("File decrypted successfully");
             if (Filetoformat.Deletefile(sfilepath)) //Deletes unencrypted file 
             {
                 System.out.println("Encrypted file deleted successfully");
             }
+            Filetoformat.bytetranslate(arrdecrypted, snew); //Problem maybe
+            System.out.println("File decrypted successfully");
+            
         }
         catch (IOException ex)
         {

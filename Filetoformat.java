@@ -29,6 +29,6 @@ public class Filetoformat
         OutputStream out = new FileOutputStream(sfilepath); //Writes new encrypted or decrypted file 
         out.write(enfile);
         out.close();
-        System.out.println("File saved successfully");
+        System.out.println("File saved successfully " + sfilepath);
     }
 }
