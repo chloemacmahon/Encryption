@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.FileChooserUI;
+import javax.lang.model.util.ElementScanner6;
 import javax.swing.JDialog;
 import java.awt.Dialog;
 import javax.swing.JOptionPane;
@@ -14,47 +15,68 @@ public class Cryptography
 {
     public static void main(String[] args)
     {
-        System.out.println("Password: "); //Promps user for user password 
-        Scanner input = new Scanner(System.in);  
-        //String sPassword = input.nextLine(); //Receives user's password
-        JFrame frame = new JFrame("Cryptography");
-        frame.setVisible(true);
-        String sPassword = (String)JOptionPane.showInputDialog(frame,"Please enter your password ",JOptionPane.PLAIN_MESSAGE);
-        JFileChooser opendialog = new JFileChooser();
-        opendialog.setCurrentDirectory(new File(System.getProperty("user.home")));
-        JDialog jparent = new JDialog();
-        jparent.setModal(true);
-        jparent.setVisible(true);
-        int result = opendialog.showOpenDialog(jparent); //Displays open file dialog
-        String sfilepath = ""; 
-        if (result == JFileChooser.APPROVE_OPTION)
+        boolean brun = true ;
+        while (brun)
         {
-            sfilepath = opendialog.getName(opendialog.getSelectedFile()); //Receives filename
+            Scanner input = new Scanner(System.in);  
+            //String sPassword = input.nextLine(); //Receives user's password
+            JFrame frame = new JFrame("Cryptography");
+            //frame.setVisible(true);
+            String sPassword = (String)JOptionPane.showInputDialog(frame,"Please enter your password ",JOptionPane.PLAIN_MESSAGE);
+            while (!confirmPassword(sPassword)) //Asks for password until correct password is entered 
+            {
+                sPassword = (String)JOptionPane.showInputDialog(frame,"Please enter your password ",JOptionPane.PLAIN_MESSAGE);
+            }
+            JFileChooser opendialog = new JFileChooser();
+            opendialog.setCurrentDirectory(new File(System.getProperty("user.home")));
+            JDialog jparent = new JDialog();
+            int result = opendialog.showOpenDialog(jparent); //Displays open file dialog
+            String sfilepath = ""; 
+            System.out.println(sPassword);
+            if (result == JFileChooser.APPROVE_OPTION)
+            {
+                sfilepath = opendialog.getName(opendialog.getSelectedFile()); //Receives filename
+
+                String sfiletype = Fileformat(sfilepath); //Tests filepath
+                //Start of user coding 
+                System.out.println(sfilepath);
+                Object[] options = {"Encryption", "Decryption"};
+                JFrame frame1 = new JFrame("Cryptography");
+                //frame1.setVisible(true);
+                int ichoice = JOptionPane.showOptionDialog(frame1,"Please select either encryption or decyption","Choose",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                System.out.println(ichoice + "");
+                if (ichoice == 0)
+                {
+                    Encryptprocess(sPassword, sfilepath, sfiletype);
+                    JOptionPane.showMessageDialog(frame, "File encoded successfully original file deleted", "Information", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if (ichoice == 1)
+                {
+                    Decryptprocess(sPassword, sfilepath, sfiletype);
+                    JOptionPane.showMessageDialog(frame, "File decoded successfully encrypted file deleted", "Information", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else 
+                {
+                    JOptionPane.showMessageDialog(frame, "Decryption or selction was not chosen", "Information", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            else 
+            {
+                JOptionPane.showMessageDialog(frame, "File not selected ", "Information", JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("File not selected");
+            }
+            
+            JFrame frame2 = new JFrame("Cryptography");
+            //frame2.setVisible(true);
+            int irepeat = JOptionPane.showConfirmDialog(frame2,"Would you like to decrypt or encrypt another file \n(Keep in mind you'll have to reenter your password for security purposes)","Choose",JOptionPane.YES_NO_OPTION);
+            if (irepeat != 0)
+            {
+                brun = false;
+            }
         }
-        else 
-        {
-            System.out.println("File not selected");
-        }
-        String sfiletype = Fileformat(sfilepath); //Tests filepath
-        //Start of user coding 
-        System.out.println(sfilepath);
-        Object[] options = {"Encryption", "Decryption"};
-        JFrame frame1 = new JFrame("Cryptography");
-        frame1.setVisible(true);
-        int ichoice = JOptionPane.showOptionDialog(frame1,"Please select either encryption or decyption","Choose",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
-        System.out.println(ichoice + "");
-        if (ichoice == 0)
-        {
-            Encryptprocess(sPassword, sfilepath, sfiletype);
-        }
-        else
-        {
-            Decryptprocess(sPassword, sfilepath, sfiletype);
-        }
-        
     }
 
-    public boolean confirmPassword(String sPassword)//Confirms password is strong 
+    public static boolean confirmPassword(String sPassword)//Confirms password is strong 
     {
         if(sPassword.length() >= 8)
         {
