@@ -72,8 +72,10 @@ public class Cryptography
             if (irepeat != 0)
             {
                 brun = false;
+                break;
             }
         }
+        
     }
 
     public static boolean confirmPassword(String sPassword)//Confirms password is strong 
@@ -144,7 +146,16 @@ public class Cryptography
             }
             Filetoformat.bytetranslate(arrdecrypted, snew); //Problem maybe
             System.out.println("File decrypted successfully");
-            
+            JFrame frame1 = new JFrame("Cryptography");
+            System.out.println(sfiletype);
+            //if ((sfiletype == "pdf") || (sfiletype == "txt") || (sfiletype == "jpeg") || (sfiletype == "png") || (sfiletype == "jpg"))
+            //{
+                int ichoice = JOptionPane.showOptionDialog(frame1, "Would you like to open the file \n(only applicable to files that your computer \nhas the software to open) ", "Open decrypted file", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, 0); //Asks if user wants to open decrypted file 
+                if (ichoice == 0)
+                {
+                    Filetoformat.displayfile(sfilepath); //Displays decrypted file 
+                }
+           // }
         }
         catch (IOException ex)
         {

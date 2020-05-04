@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.OutputStream;
+import java.awt.Desktop;
+import java.awt.desktop.*;
 
 public class Filetoformat 
 {
@@ -30,5 +32,14 @@ public class Filetoformat
         out.write(enfile);
         out.close();
         System.out.println("File saved successfully " + sfilepath);
+    }
+    public static void displayfile(String filepath) throws IOException
+    {
+        File decryptedfile = new File(filepath);
+        if (Desktop.isDesktopSupported())
+        {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(decryptedfile);
+        }
     }
 }
