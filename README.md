@@ -6,6 +6,5 @@
  - [x] Run batch file needs to be made 
  - [x] File to format still needs pdf and rar and zip 
 # Instructions 
- - Run the run.bat file 
- - If dialog message won't appear exit the previous dialog windows (Not command window)
+ - Run the run.bat file
  - Remember your password it can't be reset 
