@@ -75,7 +75,9 @@ public class Cryptography
                 break;
             }
         }
-        
+        JFrame frame1 = new JFrame("Cryptography");
+        JOptionPane.showMessageDialog(frame1, "Program finished. \nIf you want your recycled bin cleared\n press Y in the command window ", "Information", JOptionPane.INFORMATION_MESSAGE); 
+        System.exit(0);       
     }
 
     public static boolean confirmPassword(String sPassword)//Confirms password is strong 
